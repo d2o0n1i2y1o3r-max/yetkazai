@@ -1,0 +1,35 @@
+{
+  "name": "yetkaz-ai",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "server": "json-server --watch data/db.json --port 3001"
+  },
+  "dependencies": {
+    "@types/leaflet": "^1.9.22",
+    "i18next": "^26.3.6",
+    "json-server": "^1.0.0-beta.15",
+    "leaflet": "^1.9.4",
+    "next": "16.3.1",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-i18next": "^17.0.11",
+    "react-leaflet": "^5.0.0",
+    "recharts": "^3.10.1",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
