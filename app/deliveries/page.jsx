@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { useStore } from '@/store/useStore';
-import { Delivery } from '@/store/useStore';
 import { resources } from '@/lib/i18n';
 
 export default function Deliveries() {
   const { language, deliveries, setDeliveries, updateDeliveryStatus, couriers, setCouriers } = useStore();
-  const t = resources[language as keyof typeof resources].translation;
+  const t = resources[language].translation;
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,9 +29,9 @@ export default function Deliveries() {
     fetchData();
   }, [setDeliveries, setCouriers]);
 
-  const handleAdvanceStatus = async (delivery: Delivery) => {
-    let newStatus: 'pending' | 'in_transit' | 'delivered';
-    
+  const handleAdvanceStatus = async (delivery) => {
+    let newStatus;
+
     if (delivery.status === 'pending') {
       newStatus = 'in_transit';
     } else if (delivery.status === 'in_transit') {
@@ -56,12 +55,12 @@ export default function Deliveries() {
     }
   };
 
-  const getCourierName = (courierId: number) => {
+  const getCourierName = (courierId) => {
     const courier = couriers.find(c => c.id === courierId);
     return courier ? `${courier.logo} ${courier.name}` : 'Unknown';
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status) => {
     switch (status) {
       case 'delivered':
         return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
@@ -72,7 +71,7 @@ export default function Deliveries() {
     }
   };
 
-  const getStatusText = (status: string) => {
+  const getStatusText = (status) => {
     switch (status) {
       case 'delivered':
         return t.deliveries.delivered;
@@ -105,7 +104,6 @@ export default function Deliveries() {
                 <th className="text-left py-4 px-6 text-gray-600 dark:text-gray-400 font-medium">ID</th>
                 <th className="text-left py-4 px-6 text-gray-600 dark:text-gray-400 font-medium">{t.deliveries.courier}</th>
                 <th className="text-left py-4 px-6 text-gray-600 dark:text-gray-400 font-medium">Pickup</th>
-                <th className="text-left py-4 px-6 text-gray-600 dark:text-gray-400 font-medium">Dropoff</th>
                 <th className="text-left py-4 px-6 text-gray-600 dark:text-gray-400 font-medium">{t.deliveries.status}</th>
                 <th className="text-left py-4 px-6 text-gray-600 dark:text-gray-400 font-medium">{t.deliveries.cost}</th>
                 <th className="text-left py-4 px-6 text-gray-600 dark:text-gray-400 font-medium">{t.deliveries.time}</th>
@@ -128,9 +126,7 @@ export default function Deliveries() {
                     <td className="py-4 px-6 text-gray-700 dark:text-gray-300">
                       {getCourierName(delivery.courierId)}
                     </td>
-                    <td className="py-4 px-6 text-gray-700 dark:text-gray-300 text-sm">
-                      {delivery.pickupAddress}
-                    </td>
+                   
                     <td className="py-4 px-6 text-gray-700 dark:text-gray-300 text-sm">
                       {delivery.dropoffAddress}
                     </td>

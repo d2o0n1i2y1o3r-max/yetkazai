@@ -12,13 +12,13 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request) {
   try {
     const dbPath = join(process.cwd(), 'data', 'db.json');
     const db = JSON.parse(readFileSync(dbPath, 'utf-8'));
     const newDelivery = await request.json();
     
-    newDelivery.id = Math.max(...db.deliveries.map((d: any) => d.id), 0) + 1;
+    newDelivery.id = Math.max(...db.deliveries.map((d) => d.id), 0) + 1;
     newDelivery.createdAt = new Date().toISOString();
     
     db.deliveries.push(newDelivery);

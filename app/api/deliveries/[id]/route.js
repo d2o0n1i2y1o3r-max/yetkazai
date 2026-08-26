@@ -3,8 +3,8 @@ import { readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
 export async function PATCH(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  request,
+  { params }
 ) {
   try {
     const dbPath = join(process.cwd(), 'data', 'db.json');
@@ -12,7 +12,7 @@ export async function PATCH(
     const { id } = await params;
     const { status } = await request.json();
     
-    const delivery = db.deliveries.find((d: any) => d.id === parseInt(id));
+    const delivery = db.deliveries.find((d) => d.id === parseInt(id));
     if (!delivery) {
       return NextResponse.json({ error: 'Delivery not found' }, { status: 404 });
     }

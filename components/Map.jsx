@@ -24,13 +24,7 @@ const pickupIcon = L.icon({
   shadowSize: [41, 41]
 });
 
-interface MapProps {
-  stops: Array<{ id: string; address: string; lat: number; lng: number }>;
-  pickup: { address: string; lat: number; lng: number } | null;
-  optimized: boolean;
-}
-
-function MapView({ stops, pickup, optimized }: MapProps) {
+function MapView({ stops, pickup, optimized }) {
   const map = useMap();
 
   useEffect(() => {
@@ -44,7 +38,7 @@ function MapView({ stops, pickup, optimized }: MapProps) {
   return null;
 }
 
-export default function Map({ stops, pickup, optimized }: MapProps) {
+export default function Map({ stops, pickup, optimized }) {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -58,8 +52,8 @@ export default function Map({ stops, pickup, optimized }: MapProps) {
   }
 
   const routePoints = pickup 
-    ? [pickup, ...stops].map(s => [s.lat, s.lng] as [number, number])
-    : stops.map(s => [s.lat, s.lng] as [number, number]);
+    ? [pickup, ...stops].map(s => [s.lat, s.lng])
+    : stops.map(s => [s.lat, s.lng]);
 
   return (
     <MapContainer

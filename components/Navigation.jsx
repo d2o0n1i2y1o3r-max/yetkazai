@@ -11,7 +11,7 @@ import { useState, useEffect } from 'react';
 export default function Navigation() {
   const router = useRouter();
   const { language } = useStore();
-  const t = resources[language as keyof typeof resources].translation;
+  const t = resources[language].translation;
   const [isAdmin, setIsAdmin] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 

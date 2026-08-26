@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { useTranslation } from 'react-i18next';
 import { useStore } from '@/store/useStore';
+import { resources } from '@/lib/i18n';
 
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 
 export default function Routes() {
-  const { t } = useTranslation();
-  const { routeStops, pickupLocation, setRouteStops, addRouteStop, removeRouteStop, setPickupLocation, clearRoute } = useStore();
+  const { language, routeStops, pickupLocation, setRouteStops, addRouteStop, removeRouteStop, setPickupLocation, clearRoute } = useStore();
+  const t = resources[language as keyof typeof resources].translation;
   const [optimized, setOptimized] = useState(false);
   const [timeSaved, setTimeSaved] = useState(0);
   const [newStop, setNewStop] = useState({ address: '', lat: 41.3111, lng: 69.2797 });
@@ -63,33 +63,14 @@ export default function Routes() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white">
-        {t('routes.title')}
+        {t.routes.title}
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
             <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-              Pickup Location
-            </h2>
-            <div className="space-y-4">
-              <input
-                type="text"
-                value={pickupLocation?.address || ''}
-                onChange={(e) => setPickupLocation({ 
-                  address: e.target.value, 
-                  lat: 41.3111 + (Math.random() - 0.5) * 0.01,
-                  lng: 69.2797 + (Math.random() - 0.5) * 0.01
-                })}
-                placeholder="Enter pickup address"
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-              />
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-              {t('routes.addStop')}
+              {t.routes.addStop}
             </h2>
             <div className="space-y-4">
               <input
@@ -148,7 +129,7 @@ export default function Routes() {
               disabled={routeStops.length < 2}
               className="flex-1 bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-              {t('routes.optimize')}
+              {t.routes.optimize}
             </button>
             <button
               onClick={handleClear}
@@ -161,7 +142,7 @@ export default function Routes() {
           {optimized && (
             <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
               <p className="text-green-800 dark:text-green-200 font-semibold">
-                {t('routes.optimized')}: {timeSaved} {t('routes.timeSaved')}
+                {t.routes.optimized}: {timeSaved} {t.routes.timeSaved}
               </p>
             </div>
           )}

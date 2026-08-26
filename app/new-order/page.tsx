@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useStore } from '@/store/useStore';
 import { Courier } from '@/store/useStore';
+import { resources } from '@/lib/i18n';
 
 export default function NewOrder() {
-  const { t } = useTranslation();
-  const { couriers, setCouriers, addDelivery } = useStore();
+  const { language, couriers, setCouriers, addDelivery } = useStore();
+  const t = resources[language as keyof typeof resources].translation;
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     pickupAddress: '',
@@ -50,7 +50,7 @@ export default function NewOrder() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const distance = calculateDistance();
-    
+
     const results = couriers.map(courier => ({
       courier,
       price: calculatePrice(courier, distance, formData.packageWeight, formData.urgency),
@@ -105,7 +105,7 @@ export default function NewOrder() {
           urgency: 'standard'
         });
         setSelectedCourier(null);
-        alert(t('common.success'));
+        alert(t.common.success);
       }
     } catch (error) {
       console.error('Failed to create delivery:', error);
@@ -115,7 +115,7 @@ export default function NewOrder() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-600 dark:text-gray-300">{t('common.loading')}</div>
+        <div className="text-gray-600 dark:text-gray-300">{t.common.loading}</div>
       </div>
     );
   }
@@ -123,29 +123,17 @@ export default function NewOrder() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white">
-        {t('newOrder.title')}
+        {t.newOrder.title}
       </h1>
 
       {!showResults ? (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {t('newOrder.pickupAddress')}
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.pickupAddress}
-                onChange={(e) => setFormData({ ...formData, pickupAddress: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                placeholder="Toshkent, Amir Temur ko'chasi, 15"
-              />
-            </div>
+            
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {t('newOrder.dropoffAddress')}
+                {t.newOrder.dropoffAddress}
               </label>
               <input
                 type="text"
@@ -160,7 +148,7 @@ export default function NewOrder() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {t('newOrder.packageSize')}
+                  {t.newOrder.packageSize}
                 </label>
                 <select
                   value={formData.packageSize}
@@ -175,7 +163,7 @@ export default function NewOrder() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {t('newOrder.packageWeight')} (kg)
+                  {t.newOrder.packageWeight} (kg)
                 </label>
                 <input
                   type="number"
@@ -191,7 +179,7 @@ export default function NewOrder() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {t('newOrder.urgency')}
+                {t.newOrder.urgency}
               </label>
               <div className="flex gap-4">
                 <label className="flex items-center">
@@ -202,7 +190,7 @@ export default function NewOrder() {
                     onChange={(e) => setFormData({ ...formData, urgency: e.target.value })}
                     className="mr-2"
                   />
-                  {t('newOrder.standard')}
+                  {t.newOrder.standard}
                 </label>
                 <label className="flex items-center">
                   <input
@@ -212,7 +200,7 @@ export default function NewOrder() {
                     onChange={(e) => setFormData({ ...formData, urgency: e.target.value })}
                     className="mr-2"
                   />
-                  {t('newOrder.express')}
+                  {t.newOrder.express}
                 </label>
               </div>
             </div>
@@ -221,7 +209,7 @@ export default function NewOrder() {
               type="submit"
               className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
             >
-              {t('newOrder.comparing')}
+              {t.newOrder.comparing}
             </button>
           </form>
         </div>
@@ -229,17 +217,16 @@ export default function NewOrder() {
         <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-              {t('newOrder.selectCourier')}
+              {t.newOrder.selectCourier}
             </h2>
             <div className="space-y-4">
               {comparisons.map((item, index) => (
                 <div
                   key={item.courier.id}
-                  className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-                    selectedCourier === item.courier.id
+                  className={`p-4 border rounded-lg cursor-pointer transition-colors ${selectedCourier === item.courier.id
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
                       : 'border-gray-200 dark:border-gray-700 hover:border-blue-300'
-                  }`}
+                    }`}
                   onClick={() => setSelectedCourier(item.courier.id)}
                 >
                   <div className="flex items-center justify-between">
@@ -250,7 +237,7 @@ export default function NewOrder() {
                           {item.courier.name}
                           {index === 0 && (
                             <span className="ml-2 px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full dark:bg-green-900 dark:text-green-200">
-                              {t('newOrder.recommended')}
+                              {t.newOrder.recommended}
                             </span>
                           )}
                         </h3>
@@ -265,7 +252,7 @@ export default function NewOrder() {
                         {item.price.toLocaleString()} UZS
                       </p>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {item.time} {t('newOrder.time')}
+                        {item.time} {t.newOrder.time}
                       </p>
                     </div>
                   </div>
@@ -286,7 +273,7 @@ export default function NewOrder() {
               disabled={selectedCourier === null}
               className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-              {t('newOrder.submit')}
+              {t.newOrder.submit}
             </button>
           </div>
         </div>

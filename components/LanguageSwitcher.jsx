@@ -1,15 +1,12 @@
 'use client';
 
 import { useStore } from '@/store/useStore';
-import { useTranslation } from 'react-i18next';
 
 export default function LanguageSwitcher() {
   const { language, setLanguage } = useStore();
-  const { i18n } = useTranslation();
 
-  const handleLanguageChange = (lang: 'uz' | 'ru' | 'en') => {
+  const handleLanguageChange = (lang) => {
     setLanguage(lang);
-    i18n.changeLanguage(lang);
   };
 
   return (
